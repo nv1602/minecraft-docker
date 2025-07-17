@@ -8,7 +8,6 @@ services:
     tty: true
     stdin_open: true
     restart: ${RESTART}
-    stop_grace_period: ${STOP_GRACE_PERIOD}
     ports:
       - "25565:25565"
       - "19132:19132/udp"

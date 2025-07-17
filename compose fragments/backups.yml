@@ -1,0 +1,38 @@
+services:
+  backups:
+    image: itzg/mc-backup
+    depends_on:
+      mc:
+        condition: service_healthy
+    pre_stop:
+      - command: ["backup","now"]  # run final backup before stopping container
+    environment:
+      # ── Backup timing ──
+      BACKUP_INTERVAL: ${BACKUP_INTERVAL}        # twice per day
+      INITIAL_DELAY: ${INITIAL_DELAY}            # no extra wait once mc is healthy
+      BACKUP_ON_STARTUP: ${BACKUP_ON_STARTUP}     # immediate backup on first start
+
+      # ── Retention ──
+      PRUNE_BACKUPS_DAYS: ${PRUNE_BACKUPS_DAYS}         # keep last week
+
+      # ── Rclone ──
+      BACKUP_METHOD: ${BACKUP_METHOD}
+      RCLONE_REMOTE: ${RCLONE_REMOTE}         # name of your remote
+      RCLONE_DEST_DIR: ${RCLONE_DEST_DIR}   # folder in remote (created if needed)
+      DEST_DIR: /backups   # local backup folder inside the container
+      RCLONE_COMPRESS_METHOD: ${RCLONE_COMPRESS_METHOD}
+
+      # ── RCON settings ──
+      RCON_HOST: ${RCON_HOST}
+      RCON_PORT: ${RCON_PORT}
+      RCON_PASSWORD: ${RCON_PASSWORD}
+
+      # ── Logging timezone ──
+      TZ: ${TZ}
+
+    volumes:
+      - "./data:/data:ro"          # read-only world data (host:container)
+      - "./backups:/backups"       # local backup storage and temp staging for .tgz files (host:container)
+      # Copy your rclone config here (INI format):
+      #   cp ~/.config/rclone/rclone.conf ./rclone.conf
+      - "./rclone.conf:/config/rclone/rclone.conf:ro"

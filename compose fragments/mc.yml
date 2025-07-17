@@ -1,0 +1,58 @@
+services:
+  mc:
+    image: itzg/minecraft-server
+    # turn this on if you're gonna use restore-backup
+    # depends_on:
+    #  restore-backup:
+    #     condition: service_completed_successfully
+    tty: true
+    stdin_open: true
+    restart: ${RESTART}
+    stop_grace_period: ${STOP_GRACE_PERIOD}
+    ports:
+      - "25565:25565"
+      - "19132:19132/udp"
+    volumes:
+      - "./data:/data"
+    environment:
+      EULA: ${EULA}
+      ONLINE_MODE: ${ONLINE_MODE}
+      TYPE: ${TYPE}
+      VERSION: ${VERSION}
+      # type: modpack
+      MODRINTH_MODPACK: ${MODRINTH_MODPACK}
+      MODRINTH_DOWNLOAD_DEPENDENCIES: ${MODRINTH_DOWNLOAD_DEPENDENCIES}
+      MODRINTH_ALLOWED_VERSION_TYPE: ${MODRINTH_ALLOWED_VERSION_TYPE}
+      MODRINTH_LOADER: ${MODRINTH_LOADER}
+      # modrinth mods
+      MODRINTH_PROJECTS: ${MODRINTH_PROJECTS}
+      MODRINTH_DEFAULT_VERSION_TYPE: ${MODRINTH_DEFAULT_VERSION_TYPE}
+      # autopause
+      ENABLE_AUTOPAUSE: ${ENABLE_AUTOPAUSE}
+      MAX_TICK_TIME: ${MAX_TICK_TIME}
+      # shutdown announce
+      STOP_SERVER_ANNOUNCE_DELAY: ${STOP_SERVER_ANNOUNCE_DELAY}
+      # rcon
+      RCON_ENABLE: ${RCON_ENABLE}
+      RCON_PASSWORD: ${RCON_PASSWORD}
+      # basic server settings
+      MOTD: ${MOTD}
+      OPS: ${OPS}
+      ENABLE_WHITELIST: ${ENABLE_WHITELIST}
+      WHITELIST: ${WHITELIST}
+      # in-game settings
+      SEED: ${SEED}
+      DIFFICULTY: ${DIFFICULTY}
+      ALLOW_FLIGHT: ${ALLOW_FLIGHT}
+      SPAWN_PROTECTION: ${SPAWN_PROTECTION}
+      INITIAL_ENABLED_PACKS: ${INITIAL_ENABLED_PACKS}
+      # technical settings
+      MEMORY: ${MEMORY}
+      VIEW_DISTANCE: ${VIEW_DISTANCE}
+      SIMULATION_DISTANCE: ${SIMULATION_DISTANCE}
+      USE_AIKAR_FLAGS: ${USE_AIKAR_FLAGS}
+      USE_MEOWICE_FLAGS: ${USE_MEOWICE_FLAGS}
+      SNOOPER_ENABLED: ${SNOOPER_ENABLED}
+      SYNC_CHUNK_WRITES: ${SYNC_CHUNK_WRITES}
+      # vanillatweaks datapack
+      VANILLATWEAKS_SHARECODE: ${VANILLATWEAKS_SHARECODE}

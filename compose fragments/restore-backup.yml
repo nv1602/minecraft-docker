@@ -1,0 +1,16 @@
+services:
+  restore-backup:
+    # INIT-container: restores newest .tgz into ./data if empty
+    image: itzg/mc-backup
+    restart: "no"
+    entrypoint:
+      [
+        "/bin/sh",
+        "/usr/local/bin/restore-from-remote.sh",
+        "${RCLONE_REMOTE}:${RCLONE_DEST_DIR}",
+      ]
+    volumes:
+      - "./data:/data"
+      - "./backups:/backups:ro"
+      - "./rclone.conf:/config/rclone/rclone.conf:ro"
+      - "./restore-from-remote.sh:/usr/local/bin/restore-from-remote.sh"
